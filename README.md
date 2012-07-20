@@ -4,11 +4,11 @@ An engine for running turing machines written in java. I'm very VERY bored over 
 
 ## Usage
 
-> Usage: Turing Machine [{-f,--file} path]         Path to a file describing a Turing Machine
->                       [{-t,--timeout} duration]  Time in milliseconds to wait after each instruction
->                       [{-z,--zero}]              Fill the tape with 0's rather than blanks
->                       [{-q,--quiet}]             Only print the final tape value on HALT
->                       [{-h,--help}]              Display this message...
+	Usage: Turing Machine [{-f,--file} path]         Path to a file describing a Turing Machine
+	                      [{-t,--timeout} duration]  Time in milliseconds to wait after each instruction
+	                      [{-z,--zero}]              Fill the tape with 0's rather than blanks
+	                      [{-q,--quiet}]             Only print the final tape value on HALT
+	                      [{-h,--help}]              Display this message...
 
 ## Turing Machine Markup
 
