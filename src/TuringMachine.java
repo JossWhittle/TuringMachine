@@ -200,6 +200,9 @@ public class TuringMachine {
 		}
 	}
 
+	/**
+	 * Prints the current value of the tape
+	 */
 	private void printTape() {
 		String t = "";
 		for (Byte b : TAPE) {
