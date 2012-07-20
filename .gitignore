@@ -2,6 +2,10 @@
 ## Eclipse
 #################
 
+# Turing code
+*.tur
+CmdLineParser.java
+
 *.pydevproject
 .project
 .metadata
