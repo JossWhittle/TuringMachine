@@ -31,6 +31,7 @@ Here we have a simple turing machine consisting of four states. When computed it
 	(4,B,B,R,1)
 
 The machine assumes and infinite tape which is blank filled. Thus we would run this turing machine on the command line with
+
 	java TuringMachine < Simple.tur -t 100
 
 Another example machine is the 3-State Busy Beaver.
@@ -43,6 +44,7 @@ Another example machine is the 3-State Busy Beaver.
 	(3,1,1,N,H)
 
 This machine imagines a infinite tape which is zero filled. To run it would type
+
 	java TuringMachine < Beaver.tur -t 100 -z 
 
 ## Requirements
