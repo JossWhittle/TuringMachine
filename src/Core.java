@@ -83,8 +83,8 @@ public class Core {
 	/**
 	 * Loads a program file into memory
 	 * 
-	 * @param dir
-	 *            The path return Was the load successful?
+	 * @param in
+	 *            The input stream
 	 */
 	private boolean loadProgram(Scanner in) {
 

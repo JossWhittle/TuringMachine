@@ -1,0 +1,12 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$class_core.html#a4def201976d3b52c536073f1bb404f8c" title="Gets the current state." alt="" coords="199,5,345,35"/>
+<area shape="rect" id="node5" href="$class_state.html#ac49c9314e5deb711e633ea377433c327" title="Gets the instruction matching the tape." alt="" coords="229,59,315,88"/>
+<area shape="rect" id="node7" href="$class_core.html#a21ade809ac9b9123149e7a7be102408c" title="Reads from the tape." alt="" coords="225,112,319,141"/>
+<area shape="rect" id="node9" href="$class_core.html#a0c7ec3ee0e72a1fc1154b2915d9cbad2" title="Core.printTape" alt="" coords="209,165,335,195"/>
+<area shape="rect" id="node11" href="$class_core.html#a3c95303c2fb6b8a6623f072dddfc4fde" title="Writes to the tape." alt="" coords="225,219,319,248"/>
+<area shape="rect" id="node13" href="$class_instruction.html#a1cfc6d0633b4c9c3a0d51656e8a962aa" title="Get print." alt="" coords="197,272,347,301"/>
+<area shape="rect" id="node15" href="$class_core.html#a8c1ca63cd06e5f3785fd1ecd0202e1ea" title="Moves the tape head accordingly." alt="" coords="203,325,341,355"/>
+<area shape="rect" id="node17" href="$class_instruction.html#aca9f6cb25694682119471a70400457f2" title="Gets the direction." alt="" coords="203,379,341,408"/>
+<area shape="rect" id="node19" href="$class_core.html#a16135ce2918c78d4b91aa9c48217ee7d" title="Sets the current state." alt="" coords="213,432,331,461"/>
+<area shape="rect" id="node21" href="$class_instruction.html#a3078e1bd04628353f0765f62554223c5" title="Gets the next instruction." alt="" coords="198,485,346,515"/>
+</map>

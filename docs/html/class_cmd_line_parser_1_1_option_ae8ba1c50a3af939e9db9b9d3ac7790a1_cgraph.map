@@ -1,0 +1,4 @@
+<map id="G" name="G">
+<area shape="rect" id="node3" href="$class_cmd_line_parser_1_1_option.html#a2c6337bfe9c8275fd7ff9f9881699922" title="Tells whether or not this option wants a value." alt="" coords="304,29,571,59"/>
+<area shape="rect" id="node6" href="$class_cmd_line_parser_1_1_option.html#a3de6e1e7044973dcda090cea7ccadcc6" title="Override to extract and convert an option value passed on the command&#45;line." alt="" coords="304,83,571,112"/>
+</map>

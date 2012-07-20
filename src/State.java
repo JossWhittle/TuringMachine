@@ -22,6 +22,8 @@ public class State {
 	/**
 	 * Pushes an instruction into the state
 	 * 
+	 * @param n
+	 *            The scan value for this instruction
 	 * @param i
 	 *            The instruction
 	 * @return Was the operation a success? Will there be cake?
@@ -47,7 +49,7 @@ public class State {
 	public Instruction get(Byte match) {
 		return m_arr[match];
 	}
-	
+
 	/**
 	 * Prints the class contents
 	 */
@@ -56,8 +58,9 @@ public class State {
 		int c = 0;
 		for (Instruction i : m_arr) {
 			try {
-				r += "\t"+c+":"+i.toString()+"\n";
-			} catch(Exception ex) {}
+				r += "\t" + c + ":" + i.toString() + "\n";
+			} catch (Exception ex) {
+			}
 			c++;
 		}
 		return r;

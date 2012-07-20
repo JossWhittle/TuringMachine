@@ -1,0 +1,7 @@
+<map id="G" name="G">
+<area shape="rect" id="node1" href="$class_cmd_line_parser_1_1_option_exception.html" title="Base class for exceptions that may be thrown when options are parsed." alt="" coords="6,32,258,61"/>
+<area shape="rect" id="node3" href="$class_cmd_line_parser_1_1_illegal_option_value_exception.html" title="Thrown when an illegal or missing value is given by the user for an option that takes a value..." alt="" coords="307,5,637,35"/>
+<area shape="rect" id="node5" href="$class_cmd_line_parser_1_1_unknown_option_exception.html" title="Thrown when the parsed command&#45;line contains an option that is not recognised." alt="" coords="315,59,629,88"/>
+<area shape="rect" id="node7" href="$class_cmd_line_parser_1_1_not_flag_exception.html" title="Thrown when the parsed commandline contains multiple concatenated short options, such as &#45;abcd..." alt="" coords="725,32,987,61"/>
+<area shape="rect" id="node9" href="$class_cmd_line_parser_1_1_unknown_suboption_exception.html" title="Thrown when the parsed commandline contains multiple concatenated short options, such as &#45;abcd..." alt="" coords="686,85,1026,115"/>
+</map>
