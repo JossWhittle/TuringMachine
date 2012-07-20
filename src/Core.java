@@ -15,14 +15,15 @@ public class Core {
 	// CMD ARGS
 	private boolean QUIET = false;
 	private int TIMEOUT = 0;
+	private byte FILL = 0;
 
 	// Constants
 	private static final Byte NULL = 0, ZERO = 1, ONE = 2, LEFT = -1, RIGHT = 1, HALT = -1;
 
 	// Members
 	private int m_HEAD = 0, m_STATE = 0;
-	private ArrayList<Byte> TAPE = new ArrayList<Byte>(255);
-	private ArrayList<State> STATES = new ArrayList<State>(255);
+	private ArrayList<Byte> TAPE = new ArrayList<Byte>();
+	private ArrayList<State> STATES = new ArrayList<State>();
 
 	/**
 	 * Constructor
@@ -38,6 +39,7 @@ public class Core {
 		CmdLineParser.Option quiet = parser.addBooleanOption('q', "quiet");
 		CmdLineParser.Option timeout = parser.addIntegerOption('t', "timeout");
 		CmdLineParser.Option help = parser.addBooleanOption('h', "help");
+		CmdLineParser.Option zero = parser.addBooleanOption('z', "zero");
 
 		// Parse Arguments
 		try {
@@ -54,6 +56,8 @@ public class Core {
 		TIMEOUT = (Integer) parser.getOptionValue(timeout, new Integer(0));
 
 		String FILE = (String) parser.getOptionValue(file);
+		
+		FILL = ((Boolean) parser.getOptionValue(zero, Boolean.FALSE) ? ZERO : NULL);
 
 		// If -h || --help show help and exit
 		if ((Boolean) parser.getOptionValue(help, Boolean.FALSE)) {
@@ -100,8 +104,9 @@ public class Core {
 
 			if (tapeMatchFound) {
 				String[] t = in.match().group(0).trim().split("");
+				TAPE.clear();
 				for (String h : t) {
-					TAPE.add(strByte(h));
+					if (h.length() == 1) TAPE.add(strByte(h));
 				}
 			}
 
@@ -153,12 +158,12 @@ public class Core {
 	 */
 	private void runProgram() {
 		if (TAPE.size() == 0) {
-			TAPE.add(NULL);
+			TAPE.add(FILL);
 		}
 		try {
 			String t = "[TAPE]\n\t";
 			for (Byte b : TAPE) {
-				t += "" + b;
+				t += "" + (b == 0 ? "_" : (b - 1));
 			}
 			System.out.println(t + "\n");
 
@@ -212,10 +217,10 @@ public class Core {
 	private void moveHead(byte dir) {
 		m_HEAD += dir;
 		if (m_HEAD < 0) {
-			TAPE.add(0, NULL);
+			TAPE.add(0, FILL);
 			m_HEAD = 0;
 		} else if (m_HEAD >= TAPE.size()) {
-			TAPE.add(NULL);
+			TAPE.add(m_HEAD,FILL);
 		}
 	}
 
@@ -274,6 +279,7 @@ public class Core {
 	private void printUsage() {
 		System.err.println("Usage: Turing Machine [{-f,--file} path]\n"
 				+ "                      [{-t,--timeout} duration]\n" 
+				+ "                      [{-z,--zero}]\n"
 				+ "                      [{-q,--quiet}]\n"
 				+ "                      [{-h,--help}]");
 	}
