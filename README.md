@@ -19,5 +19,7 @@ Turing machines are defined as 5-Tuples consisting of:
 * Move Command   (L/N/R)
 * Next State ID  (digit)
 
+Optionally, the first line of a Turing Machine file can be a String of B's, 0's, and 1's to define the initial state of the tape.
+
 ## An example Turing Machine
 
