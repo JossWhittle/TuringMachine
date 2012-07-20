@@ -24,20 +24,24 @@ Optionally, the first line of a Turing Machine file can be a String of B's, 0's,
 ## An example Turing Machine
 
 Here we have a simple turing machine consisting of four states. When computed it produces and infinitely long string of 0 space 1 space 0 space 1...
+
 	(1,B,0,R,2)
 	(2,B,B,R,3)
 	(3,B,1,R,4)
 	(4,B,B,R,1)
+
 The machine assumes and infinite tape which is blank filled. Thus we would run this turing machine on the command line with
 	java TuringMachine < Simple.tur -t 100
 
 Another example machine is the 3-State Busy Beaver.
+
 	(1,0,1,R,2)
 	(1,1,1,L,3)
 	(2,0,1,L,1)
 	(2,1,1,R,2)
 	(3,0,1,L,2)
 	(3,1,1,N,H)
+
 This machine imagines a infinite tape which is zero filled. To run it would type
 	java TuringMachine < Beaver.tur -t 100 -z 
 
