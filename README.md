@@ -49,4 +49,4 @@ This machine imagines a infinite tape which is zero filled. To run it would type
 
 ## Requirements
 
-The code in this project requires the JArgs file CmdLineParser.java, which can be aquired here https://github.com/purcell/jargs
+The code in this project requires the JArgs file CmdLineParser.java, which can be acquired here https://github.com/purcell/jargs
