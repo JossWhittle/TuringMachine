@@ -10,7 +10,7 @@ public class Instruction {
 
 	// Members
 	private Byte m_print;
-	private byte m_dir;
+	private Byte m_dir;
 	private int m_next;
 
 	/**
@@ -54,6 +54,6 @@ public class Instruction {
 	 * return The contents of the class
 	 */
 	public String toString() {
-		return "\t("+m_print+","+m_dir+","+m_next+")";
+		return "("+(m_print == 0 ? "B" : (m_print-1))+","+(m_dir < 0 ? "L" : (m_dir > 0 ? "R" : "N"))+","+m_next+")";
 	}
 }

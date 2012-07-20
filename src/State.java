@@ -53,10 +53,12 @@ public class State {
 	 */
 	public String toString() {
 		String r = "";
+		int c = 0;
 		for (Instruction i : m_arr) {
 			try {
-				r += i.toString()+"\n";
+				r += "\t"+c+":"+i.toString()+"\n";
 			} catch(Exception ex) {}
+			c++;
 		}
 		return r;
 	}

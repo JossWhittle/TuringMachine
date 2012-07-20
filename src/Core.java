@@ -1,6 +1,8 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Runs when you call it...
@@ -10,6 +12,10 @@ import java.util.Scanner;
  */
 public class Core {
 
+	// CMD ARGS
+	private boolean QUIET = false;
+	private int TIMEOUT = 0;
+	
 	// Constants
 	private static final Byte NULL = 0, ZERO = 1, ONE = 2, LEFT = -1, RIGHT = 1, HALT = -1;
 	
@@ -25,13 +31,51 @@ public class Core {
 	 *            System Params
 	 */
 	public Core(String[] args) {
+		
+		// Command Line Args
+		CmdLineParser parser = new CmdLineParser();
+        CmdLineParser.Option file = parser.addStringOption('f', "file");
+        CmdLineParser.Option quiet = parser.addBooleanOption('q', "quiet");
+        CmdLineParser.Option timeout = parser.addIntegerOption('t', "timeout");
+        CmdLineParser.Option help = parser.addBooleanOption('h', "help");
+		
+        // Parse Arguments
+        try {
+            parser.parse(args);
+        }
+        catch (CmdLineParser.OptionException e) {
+            System.err.println(e.getMessage());
+            printUsage();
+            System.exit(2);
+        }
+        
+        // Retrieve Values
+        QUIET = (Boolean)parser.getOptionValue(quiet, Boolean.FALSE);
+        
+        TIMEOUT = (Integer)parser.getOptionValue(timeout, new Integer(0));
+        
+        String FILE = (String)parser.getOptionValue(file);
+        
+        // If -h || --help show help and exit
+        if ((Boolean)parser.getOptionValue(help, Boolean.FALSE)) {
+        	printUsage();
+            System.exit(2);
+        }
+        
+        // Run
 		try {
-			if (args.length >= 1) {
-				loadProgram(new Scanner(new File(args[0])));
+			if (FILE != null) {
+				// Load from file and rin
+				if (loadProgram(new Scanner(new File(FILE)))) {
+					runProgram();
+				}
 			} else {
-				loadProgram(new Scanner(System.in));
+				// Load from std input and run
+				if (loadProgram(new Scanner(System.in))) {
+					runProgram();
+				}
 			}
-			runProgram();
+			
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -42,72 +86,127 @@ public class Core {
 	 * 
 	 * @param dir
 	 *            The path
+	 * return Was the load successful?
 	 */
-	private void loadProgram(Scanner in) {
-		TAPE = new ArrayList<Byte>(255);
-		STATES = new ArrayList<State>(255);		
-		// int c = 0;
+	private boolean loadProgram(Scanner in) {
+		
 		try {
-			while (in.hasNext()) {
-				// System.out.println(c++);
-				in.next("(?iu)\\((\\d+),([B01]),([B01]),([LRN]),(\\d+|H)\\)");
+			// Try to read the first line of the file as the initial state of the TAPE
+			String line = in.nextLine();
 
-				int sid = Integer.parseInt(in.match().group(1)) - 1;
-
-				Byte scan = (byte) (Byte.parseByte(in.match().group(2)) + 1);
-				Byte print = (byte) (Byte.parseByte(in.match().group(3)) + 1);
-				byte direction = NULL;
-				if (in.match().group(4).equals("L")) {
-					direction = LEFT;
-				} else if (in.match().group(4).equals("R")) {
-					direction = RIGHT;
+			// Does the line match a string of B's 0's and 1's?
+			Pattern pattern = Pattern.compile("(?iux)^([01B]+)$");
+			Matcher matcher = pattern.matcher(line);
+			boolean tapeMatchFound = matcher.find();
+			
+			if (tapeMatchFound) {
+				String[] t = in.match().group(0).trim().split("");
+				for (String h : t) {
+					TAPE.add(strByte(h));
 				}
-
-				int next = -1;
-				try {
-					next = Integer.parseInt(in.match().group(5)) - 1;
-				} catch (Exception ex) {
-				}
-
-				while (STATES.size() <= sid) {
-					STATES.add(new State());
-				}
-				if (STATES.get(sid) == null) {
-					STATES.add(sid, new State());
-				}
-
-				STATES.get(sid).push(scan, new Instruction(print, direction, next));
 			}
+			
+			while (in.hasNext()) {
+				if (tapeMatchFound) {
+					line = in.nextLine();
+				} else {
+					tapeMatchFound = true;
+				}
+				
+				// Does this line match the pattern of (1,B,0,R,2) ?
+				pattern = Pattern.compile("(?iux)^\\((\\d+),([01B]),([01B]),([LRN]),(\\d+|H)\\)$");
+				matcher = pattern.matcher(line);
+				boolean matchFound = matcher.find();
+				
+				if (matchFound) {
+					int sid = Integer.parseInt(matcher.group(1)) - 1;
+
+					Byte scan = strByte(matcher.group(2));
+					Byte print = strByte(matcher.group(3));
+					byte direction = NULL;
+					if (matcher.group(4).equals("L")) {
+						direction = LEFT;
+					} else if (matcher.group(4).equals("R")) {
+						direction = RIGHT;
+					}
+
+					int next = -1;
+					try {
+						next = Integer.parseInt(matcher.group(5)) - 1;
+					} catch (Exception ex) {
+					}
+
+					while (STATES.size() <= sid) {
+						STATES.add(new State());
+					}
+					if (STATES.get(sid) == null) {
+						STATES.add(sid, new State());
+					}
+
+					STATES.get(sid).push(scan, new Instruction(print, direction, next));
+				}
+			}
+			return true;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			System.err.println("Error loading program...");
+			System.exit(2);
 		}
+		return false;
 	}
 
 	/**
 	 * Runs the loaded program
 	 */
 	private void runProgram() {
+		if (TAPE.size() == 0) {
+			TAPE.add(NULL);
+		}
 		try {
+			String t = "[TAPE]\n\t";
+			for (Byte b : TAPE) {
+				t += ""+b;
+			}
+			System.out.println(t+"\n");
+			
 			for (int i = 0; i < STATES.size(); i++) {
 				System.out.println("[STATE " + i + "]\n" + STATES.get(i).toString());
 			}
-			System.out.println("\n\n");
+			System.out.println();
 
 			while (m_STATE != HALT) {
 				Instruction i = currentState().get(read());
 				if (i == null) {
-					System.out.println("\n\nUndefined Behaviour: [State "+m_STATE+1+"] [Instruction "+read()+"]");
-					System.exit(0);
+					System.err.println("Undefined Behaviour: [State "+(m_STATE)+"] [Instruction "+read()+"]\n");
+					printTape();
+					System.exit(2);
 				} else {
+					write(i.getPrint());
+					moveHead(i.getDir());
+					setState(i.getNext());
 					
+					if (!QUIET || m_STATE == HALT) {
+						printTape();
+					}
+					
+					if (!QUIET && TIMEOUT > 0) {
+						Thread.sleep(TIMEOUT);
+					}
 				}
 			}
 			
-			System.out.println("\n\nAll done!");
+			System.out.println("\nAll done!");
 			
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
 		}
+	}
+	
+	private void printTape() {
+		String t = "";
+		for (Byte b : TAPE) {
+			t += ""+(b == 0 ? "_" : (b-1));
+		}
+		System.out.println(t);
 	}
 
 	/**
@@ -142,7 +241,7 @@ public class Core {
 	 * @return The value
 	 */
 	private Byte read() {
-		return TAPE.get(m_HEAD);
+		return (byte) (TAPE.get(m_HEAD));
 	}
 	
 	/**
@@ -160,6 +259,25 @@ public class Core {
 	private void setState(int sid) {
 		m_STATE = sid;
 	}
+	
+	/**
+	 * Takes a string and converts it to either NULL, ZERO, or ONE
+	 * @param h The string
+	 * @return The byte
+	 */
+	private Byte strByte(String h) {
+		return ((h.equals("0")) ? ZERO : ((h.equals("1")) ? ONE : NULL));		
+	}
+	
+	/**
+	 * Prints the help message
+	 */
+	private void printUsage() {
+        System.err.println("Usage: Turing Machine [{-f,--file} path]\n"+
+        				   "                      [{-t,--timeout} duration]\n"+
+        				   "                      [{-q,--quiet}]\n"+
+        				   "                      [{-h,--help}]");
+    }
 
 	/**
 	 * Entry Point
