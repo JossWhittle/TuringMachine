@@ -64,7 +64,7 @@ public class Core {
 		// Run
 		try {
 			if (FILE != null) {
-				// Load from file and rin
+				// Load from file and run
 				if (loadProgram(new Scanner(new File(FILE)))) {
 					runProgram();
 				}
@@ -122,12 +122,7 @@ public class Core {
 
 					Byte scan = strByte(matcher.group(2));
 					Byte print = strByte(matcher.group(3));
-					byte direction = NULL;
-					if (matcher.group(4).equals("L")) {
-						direction = LEFT;
-					} else if (matcher.group(4).equals("R")) {
-						direction = RIGHT;
-					}
+					Byte direction = (matcher.group(4).equals("L") ? LEFT : (matcher.group(4).equals("R")) ? RIGHT : NULL);
 
 					int next = -1;
 					try {
