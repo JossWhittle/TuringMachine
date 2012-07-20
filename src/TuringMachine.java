@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  * @author Joss
  * 
  */
-public class Core {
+public class TuringMachine {
 
 	// CMD ARGS
 	private boolean QUIET = false;
@@ -31,7 +31,7 @@ public class Core {
 	 * @param args
 	 *            System Params
 	 */
-	public Core(String[] args) {
+	public TuringMachine(String[] args) {
 
 		// Command Line Args
 		CmdLineParser parser = new CmdLineParser();
@@ -291,6 +291,6 @@ public class Core {
 	 *            System Params
 	 */
 	public static void main(String[] args) {
-		new Core(args);
+		new TuringMachine(args);
 	}
 }
