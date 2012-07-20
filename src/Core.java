@@ -273,7 +273,8 @@ public class Core {
 	 */
 	private void printUsage() {
 		System.err.println("Usage: Turing Machine [{-f,--file} path]\n"
-				+ "                      [{-t,--timeout} duration]\n" + "                      [{-q,--quiet}]\n"
+				+ "                      [{-t,--timeout} duration]\n" 
+				+ "                      [{-q,--quiet}]\n"
 				+ "                      [{-h,--help}]");
 	}
 
