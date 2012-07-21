@@ -14,7 +14,7 @@ public class TuringMachine {
 
 	// CMD ARGS
 	private boolean QUIET = false;
-	private int TIMEOUT = 0;
+	private int TIMEOUT = 0, PRINT = -1;
 	private byte FILL = 0;
 
 	// Constants
@@ -40,6 +40,7 @@ public class TuringMachine {
 		CmdLineParser.Option timeout = parser.addIntegerOption('t', "timeout");
 		CmdLineParser.Option help = parser.addBooleanOption('h', "help");
 		CmdLineParser.Option zero = parser.addBooleanOption('z', "zero");
+		CmdLineParser.Option print = parser.addIntegerOption('p', "print");
 
 		// Parse Arguments
 		try {
@@ -58,6 +59,8 @@ public class TuringMachine {
 		String FILE = (String) parser.getOptionValue(file);
 		
 		FILL = ((Boolean) parser.getOptionValue(zero, Boolean.FALSE) ? ZERO : NULL);
+		
+		PRINT = (Integer) parser.getOptionValue(print, new Integer(0)) - 1;
 
 		// If -h || --help show help and exit
 		if ((Boolean) parser.getOptionValue(help, Boolean.FALSE)) {
@@ -183,12 +186,12 @@ public class TuringMachine {
 					moveHead(i.getDir());
 					setState(i.getNext());
 
-					if (!QUIET || m_STATE == HALT) {
+					if ((!QUIET || m_STATE == HALT) && (m_STATE == PRINT || PRINT == -1)) {
 						printTape();
-					}
-
-					if (!QUIET && TIMEOUT > 0) {
-						Thread.sleep(TIMEOUT);
+						
+						if (TIMEOUT > 0) {
+							Thread.sleep(TIMEOUT);
+						}
 					}
 				}
 			}
@@ -281,7 +284,8 @@ public class TuringMachine {
 	 */
 	private void printUsage() {
 		System.err.println("Usage: Turing Machine [{-f,--file} path]\n"
-				+ "                      [{-t,--timeout} duration]\n" 
+				+ "                      [{-t,--timeout} duration]\n"
+				+ "                      [{-p,--print} print state]\n"
 				+ "                      [{-z,--zero}]\n"
 				+ "                      [{-q,--quiet}]\n"
 				+ "                      [{-h,--help}]");
