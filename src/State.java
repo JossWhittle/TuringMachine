@@ -58,7 +58,7 @@ public class State {
 		int c = 0;
 		for (Instruction i : m_arr) {
 			try {
-				r += "\t" + c + ":" + i.toString() + "\n";
+				r += "\t" + (c==0 ? "B" : (c-1)) + ":" + i.toString() + "\n";
 			} catch (Exception ex) {
 			}
 			c++;

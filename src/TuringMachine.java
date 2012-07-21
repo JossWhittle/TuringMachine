@@ -14,7 +14,7 @@ public class TuringMachine {
 
 	// CMD ARGS
 	private boolean QUIET = false;
-	private int TIMEOUT = 0, PRINT = -1;
+	private int TIMEOUT = 0, PRINT = -1, PAD = 0;
 	private byte FILL = 0;
 
 	// Constants
@@ -41,6 +41,7 @@ public class TuringMachine {
 		CmdLineParser.Option help = parser.addBooleanOption('h', "help");
 		CmdLineParser.Option zero = parser.addBooleanOption('z', "zero");
 		CmdLineParser.Option print = parser.addIntegerOption('p', "print");
+		CmdLineParser.Option pad = parser.addIntegerOption('d', "pad");
 
 		// Parse Arguments
 		try {
@@ -54,13 +55,15 @@ public class TuringMachine {
 		// Retrieve Values
 		QUIET = (Boolean) parser.getOptionValue(quiet, Boolean.FALSE);
 
-		TIMEOUT = (Integer) parser.getOptionValue(timeout, new Integer(0));
+		TIMEOUT = Math.max(0,(Integer) parser.getOptionValue(timeout, new Integer(0)));
 
 		String FILE = (String) parser.getOptionValue(file);
 		
 		FILL = ((Boolean) parser.getOptionValue(zero, Boolean.FALSE) ? ZERO : NULL);
 		
-		PRINT = (Integer) parser.getOptionValue(print, new Integer(0)) - 1;
+		PRINT = Math.max(-1,(Integer) parser.getOptionValue(print, new Integer(0)) - 1);
+		
+		PAD = Math.max(0, (Integer) parser.getOptionValue(pad, new Integer(0)));
 
 		// If -h || --help show help and exit
 		if ((Boolean) parser.getOptionValue(help, Boolean.FALSE)) {
@@ -95,6 +98,13 @@ public class TuringMachine {
 	 */
 	private boolean loadProgram(Scanner in) {
 
+		if (PAD > 0) {
+			for (int i = 0; i <= PAD*2; i++) {
+				TAPE.add(FILL);
+			}
+			m_HEAD = PAD;
+		}
+		
 		try {
 			// Try to read the first line of the file as the initial state of
 			// the TAPE
@@ -107,9 +117,12 @@ public class TuringMachine {
 
 			if (tapeMatchFound) {
 				String[] t = in.match().group(0).trim().split("");
-				TAPE.clear();
+				int head = m_HEAD;
 				for (String h : t) {
-					if (h.length() == 1) TAPE.add(strByte(h));
+					if (h.length() == 1) {
+						TAPE.add(head,strByte(h));
+						head++;
+					}
 				}
 			}
 
@@ -171,14 +184,14 @@ public class TuringMachine {
 			System.out.println(t + "\n");
 
 			for (int i = 0; i < STATES.size(); i++) {
-				System.out.println("[STATE " + i + "]\n" + STATES.get(i).toString());
+				System.out.println("[STATE " + (i+1) + "]\n" + STATES.get(i).toString());
 			}
 			System.out.println();
 
 			while (m_STATE != HALT) {
 				Instruction i = currentState().get(read());
 				if (i == null) {
-					System.err.println("Undefined Behaviour: [State " + (m_STATE) + "] [Instruction " + read() + "]\n");
+					System.err.println("Undefined Behaviour: [State " + (m_STATE+1) + "] [Instruction " + (read() == NULL ? "B" : (read()+1)) + "]\n");
 					printTape();
 					System.exit(2);
 				} else {
@@ -199,7 +212,7 @@ public class TuringMachine {
 			System.out.println("\nAll done!");
 
 		} catch (Exception ex) {
-			// ex.printStackTrace();
+			//ex.printStackTrace();
 		}
 	}
 
@@ -255,7 +268,12 @@ public class TuringMachine {
 	 * @return The state
 	 */
 	private State currentState() {
-		return STATES.get(m_STATE);
+		if (m_STATE >=0 && m_STATE < STATES.size()) {
+			return STATES.get(m_STATE);
+		}
+		System.err.println("\nUndefined State: [STATE "+(m_STATE+1)+"]");
+		System.exit(2);
+		return null;
 	}
 
 	/**

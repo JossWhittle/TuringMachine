@@ -54,6 +54,6 @@ public class Instruction {
 	 * return The contents of the class
 	 */
 	public String toString() {
-		return "("+(m_print == 0 ? "B" : (m_print-1))+","+(m_dir < 0 ? "L" : (m_dir > 0 ? "R" : "N"))+","+((m_next == -1) ? "H" : m_next)+")";
+		return "("+(m_print == 0 ? "B" : (m_print-1))+","+(m_dir < 0 ? "L" : (m_dir > 0 ? "R" : "N"))+","+((m_next == -1) ? "H" : (m_next+1))+")";
 	}
 }
