@@ -45,7 +45,7 @@ Another example machine is the 3-State Busy Beaver.
 	(3,0,1,L,2)
 	(3,1,1,N,H)
 
-This machine imagines a infinite tape which is zero filled, it would also be useful to center the output on a padded tape. To run it would type
+This machine imagines a infinite tape which is zero filled, it would also be useful to center the output on a padded tape. To run it we would type
 
 	java TuringMachine < Beaver.tur -t 100 -z -d 5
 
