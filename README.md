@@ -7,6 +7,7 @@ An engine for running turing machines written in java. I'm very VERY bored over 
 	Usage: Turing Machine [{-f,--file} path]         Path to a file describing a Turing Machine
 	                      [{-t,--timeout} duration]  Time in milliseconds to wait after each instruction
 	                      [{-p,--print} print state] Only print to the screen whilst in the given state
+	                      [{-d,--pad} tape padding]  Pads the tape with a given number of the tape default
 	                      [{-z,--zero}]              Fill the tape with 0's rather than blanks
 	                      [{-q,--quiet}]             Only print the final tape value on HALT
 	                      [{-h,--help}]              Display this message...
@@ -44,9 +45,9 @@ Another example machine is the 3-State Busy Beaver.
 	(3,0,1,L,2)
 	(3,1,1,N,H)
 
-This machine imagines a infinite tape which is zero filled. To run it would type
+This machine imagines a infinite tape which is zero filled, it would also be useful to center the output on a padded tape. To run it would type
 
-	java TuringMachine < Beaver.tur -t 100 -z
+	java TuringMachine < Beaver.tur -t 100 -z -d 5
 
 Finally, here is an example of a Binary Adder. It counts upwards indefinitely starting at the current value in the tape. In this case 0.
 
