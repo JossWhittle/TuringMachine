@@ -45,7 +45,31 @@ Another example machine is the 3-State Busy Beaver.
 
 This machine imagines a infinite tape which is zero filled. To run it would type
 
-	java TuringMachine < Beaver.tur -t 100 -z 
+	java TuringMachine < Beaver.tur -t 100 -z
+
+Finally, here is an example of a Binary Adder. It counts upwards indefinitely
+
+	0
+
+	(1,B,0,R,2)
+	(1,0,0,R,2)
+	(1,1,1,R,2)
+
+	(2,0,0,R,2)
+	(2,1,1,R,2)
+	(2,B,B,L,3)
+
+	(3,1,0,L,3)
+	(3,B,1,L,4)
+	(3,0,1,L,4)
+
+	(4,0,0,L,4)
+	(4,1,1,L,4)
+	(4,B,B,R,1) 
+
+Due to the fact this machine only shows relevant data on the tape whilst in state 1 we can use the -p tag to limit tape output to the console only while in that state
+
+	java TuringMachine < Adder.tur -t 100 -p 1
 
 ## Requirements
 
