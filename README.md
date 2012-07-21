@@ -47,7 +47,7 @@ This machine imagines a infinite tape which is zero filled. To run it would type
 
 	java TuringMachine < Beaver.tur -t 100 -z
 
-Finally, here is an example of a Binary Adder. It counts upwards indefinitely
+Finally, here is an example of a Binary Adder. It counts upwards indefinitely starting at the current value in the tape. In this case 0.
 
 	0
 
