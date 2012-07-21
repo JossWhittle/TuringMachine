@@ -178,10 +178,13 @@ public class TuringMachine {
 		}
 		try {
 			String t = "[TAPE]\n\t";
-			for (Byte b : TAPE) {
-				t += "" + (b == 0 ? "_" : (b - 1));
+			String tv = "\t";
+			for (int i = 0; i < TAPE.size(); i++) {
+				Byte b = TAPE.get(i);
+				t += "" + (i == m_HEAD ? "*" : " ");
+				tv += "" + (b == 0 ? "_" : (b - 1));
 			}
-			System.out.println(t + "\n");
+			System.out.println(t + "\n" + tv + "\n");
 
 			for (int i = 0; i < STATES.size(); i++) {
 				System.out.println("[STATE " + (i+1) + "]\n" + STATES.get(i).toString());
